@@ -1,0 +1,16 @@
+{
+  "name": "tw-device-sdk",
+  "version": "1.0.0",
+  "description": "Device SDK for Thingsweb",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "jsonwebtoken": "^8.4.0",
+    "request": "^2.88.0",
+    "request-promise-native": "^1.0.5"
+  }
+}
