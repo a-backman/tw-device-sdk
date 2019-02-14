@@ -70,8 +70,7 @@ class Client {
 }
 
 class SDK {
-	async authenticateClient(clientId, clientSecret) {
-
+	async initWithCredentials(clientId, clientSecret) {
 		const body = await request.post(
 			'https://verithings.auth0.com/oauth/token', {
 				json: {
@@ -85,7 +84,10 @@ class SDK {
 			this.authenticateClient(clientId, clientSecret);
 		}, body.expires_in * 1000);
 
+		return this.initWithToken(body.access_token);
+	}
 
+	async initWithToken(token) {
 		const client = new Client();
 		client.setAccessToken(body.access_token);
 		return client;
