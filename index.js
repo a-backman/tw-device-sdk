@@ -89,7 +89,7 @@ class SDK {
 
 	async initWithToken(token) {
 		const client = new Client();
-		client.setAccessToken(body.access_token);
+		client.setAccessToken(token);
 		return client;
 	}
 }
