@@ -9,7 +9,7 @@ class Client {
 
 		const token = jwt.decode(accessToken);
 		this.accessToken = accessToken;
-		this.scopes = token.scope.split(' ');
+		this.scopes = token.scope ? token.scope.split(' ') : [];
 		this.identity = token['http://thingsweb.com/groups'][0];
 	}
 
