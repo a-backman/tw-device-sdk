@@ -1,9 +1,11 @@
 const request = require('request-promise-native');
 const jwt = require('jsonwebtoken');
 
-const baseURL = 'https://api.thingsweb.io';
-
 class Client {
+
+	constructor(baseURL){
+		this.baseURL = baseURL;
+	}
 
 	setAccessToken(accessToken) {
 
@@ -16,7 +18,7 @@ class Client {
 	async getDevices() {
 
 		return await request.get(
-			`${baseURL}/organizations/${this.identity}/devices`, {
+			`${this.baseURL}/organizations/${this.identity}/devices`, {
 				headers: {
 					"Content-Type": "application/json",
 					'Authorization': `Bearer ${this.accessToken}`
@@ -34,7 +36,7 @@ class Client {
 			type: 'Virtual'
 		}
 		return await request.post(
-			`${baseURL}/organizations/${this.identity}/devices`, {
+			`${this.baseURL}/organizations/${this.identity}/devices`, {
 				headers: {
 					"Content-Type": "application/json",
 					'Authorization': `Bearer ${this.accessToken}`
@@ -46,7 +48,7 @@ class Client {
 
 	async deleteDevice(deviceId) {
 		return await request.delete(
-			`${baseURL}/organizations/${this.identity}/devices/${deviceId}`, {
+			`${this.baseURL}/organizations/${this.identity}/devices/${deviceId}`, {
 				headers: {
 					"Content-Type": "application/json",
 					'Authorization': `Bearer ${this.accessToken}`
@@ -57,7 +59,7 @@ class Client {
 
 	async publishData(deviceId, data) {
 		return await request.post(
-			`${baseURL}/organizations/${this.identity}/devices/${deviceId}/data`, {
+			`${this.baseURL}/organizations/${this.identity}/devices/${deviceId}/data`, {
 				headers: {
 					"Content-Type": "application/json",
 					'Authorization': `Bearer ${this.accessToken}`
@@ -70,6 +72,11 @@ class Client {
 }
 
 class SDK {
+
+	constructor(baseURL){
+		this.baseURL = baseURL;
+	}
+
 	async initWithCredentials(clientId, clientSecret) {
 		const body = await request.post(
 			'https://verithings.auth0.com/oauth/token', {
@@ -88,7 +95,7 @@ class SDK {
 	}
 
 	async initWithToken(token) {
-		const client = new Client();
+		const client = new Client(this.baseURL);
 		client.setAccessToken(token);
 		return client;
 	}
