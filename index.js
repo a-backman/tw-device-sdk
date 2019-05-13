@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken');
 
 class Client {
 
-	constructor(baseURL){
+	constructor(baseURL) {
 		this.baseURL = baseURL;
 	}
 
@@ -17,14 +17,30 @@ class Client {
 
 	async getDevices() {
 
-		return await request.get(
-			`${this.baseURL}/organizations/${this.identity}/devices`, {
-				headers: {
-					"Content-Type": "application/json",
-					'Authorization': `Bearer ${this.accessToken}`
+		return JSON.parse(
+			await request.get(
+				`${this.baseURL}/organizations/${this.identity}/devices`, {
+					headers: {
+						"Content-Type": "application/json",
+						'Authorization': `Bearer ${this.accessToken}`
+					}
 				}
-			}
-		)
+			)
+		);
+	}
+
+	async getDeviceData(deviceId) {
+
+		return JSON.parse(
+			await request.get(
+				`${this.baseURL}/organizations/${this.identity}/devices/${deviceId}/data`, {
+					headers: {
+						"Content-Type": "application/json",
+						'Authorization': `Bearer ${this.accessToken}`
+					}
+				}
+			)
+		);
 	}
 
 	async createDevice(deviceName, instruments = {}, metadata = {}) {
@@ -73,7 +89,7 @@ class Client {
 
 class SDK {
 
-	constructor(baseURL){
+	constructor(baseURL) {
 		this.baseURL = baseURL;
 	}
 
@@ -88,7 +104,7 @@ class SDK {
 				}
 			});
 		setTimeout(() => {
-			this.authenticateClient(clientId, clientSecret);
+			this.initWithCredentials(clientId, clientSecret);
 		}, body.expires_in * 1000);
 
 		return this.initWithToken(body.access_token);
