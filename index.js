@@ -29,11 +29,11 @@ class Client {
 		);
 	}
 
-	async getDeviceData(deviceId) {
+	async getDevice(deviceId) {
 
 		return JSON.parse(
 			await request.get(
-				`${this.baseURL}/organizations/${this.identity}/devices/${deviceId}/data`, {
+				`${this.baseURL}/organizations/${this.identity}/devices/${deviceId}`, {
 					headers: {
 						"Content-Type": "application/json",
 						'Authorization': `Bearer ${this.accessToken}`
@@ -43,12 +43,11 @@ class Client {
 		);
 	}
 
-	async createDevice(deviceName, instruments = {}, metadata = {}) {
+	async createDevice(deviceName, manufacturer) {
 		const device = {
 			organizationId: this.identity,
 			name: deviceName,
-			instruments: instruments,
-			metadata: metadata,
+			manufacturer: manufacturer,
 			type: 'Virtual'
 		}
 		return await request.post(
@@ -60,6 +59,22 @@ class Client {
 				json: device
 			}
 		)
+	}
+
+	async createInstruments(deviceId, instruments) {
+		const result = [];
+		for (var i = 0; i < instruments.length; i++) {
+			result[i] = await request.post(
+				`${this.baseURL}/organizations/${this.identity}/devices/${deviceId}/instruments`, {
+					headers: {
+						"Content-Type": "application/json",
+						'Authorization': `Bearer ${this.accessToken}`
+					},
+					json: instruments[i]
+				}
+			)
+		}
+		return result
 	}
 
 	async deleteDevice(deviceId) {
