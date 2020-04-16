@@ -1,16 +1,37 @@
 {
-  "name": "tw-device-sdk",
-  "version": "1.0.0",
-  "description": "Device SDK for Thingsweb",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "jsonwebtoken": "^8.4.0",
-    "request": "^2.88.0",
-    "request-promise-native": "^1.0.5"
-  }
+	"name": "tw-device-sdk",
+	"version": "1.0.0",
+	"description": "",
+	"main": "index.js",
+	"scripts": {
+		"start": "node -r ts-node/register --preserve-symlinks ./src/index.ts",
+		"start:watch": "nodemon",
+		"build": "tsc"
+	},
+	"author": "",
+	"license": "ISC",
+	"dependencies": {
+		"@marcj/marshal": "^2.1.3",
+		"got": "^10.6.0",
+		"jsonwebtoken": "^8.5.1"
+	},
+	"devDependencies": {
+		"ts-node": "^8.6.2",
+		"tslib": "^1.10.0",
+		"typescript": "^3.7.5",
+		"reflect-metadata": "^0.1.13"
+	},
+	"nodemonConfig": {
+		"ignore": [
+			"**/*.test.ts",
+			"**/*.spec.ts",
+			".git",
+			"node_modules"
+		],
+		"watch": [
+			"."
+		],
+		"exec": "npm start",
+		"ext": "ts, js, json"
+	}
 }
