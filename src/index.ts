@@ -115,6 +115,20 @@ export class Client {
 			return validatedPlainToClass(this.getDeviceClassType(d), d)
 	}
 
+	async getMetadata(deviceId: string): Promise<MetadataModel[]> {
+
+		const d = await got.get(
+			`${this.baseURL}/organizations/${this.identity}/devices/${deviceId}/metadata`, {
+			headers: {
+				"Content-Type": "application/json",
+				'Authorization': `Bearer ${this.jwt}`
+			}
+		}).json<MetadataModel[]>();
+		if (d)
+			return d; // FIXME, this breaks when using validatedPlainToClass
+		return [];
+	}
+
 	async createDevice(deviceName: string, manufacturer: string, persistData: boolean = true) {
 		const device = validatedPlainToClass(
 			VirtualDeviceModel,
@@ -140,11 +154,12 @@ export class Client {
 			return validatedPlainToClass(this.getDeviceClassType(d), d)
 	}
 
-	async createMetadata(deviceId: string, key: string, value: string | number) {
+	async createMetadata(deviceId: string, key: string, value: string | number, readonly: boolean = false) {
 
 		const md = new MetadataModel();
 		md.key = key;
 		md.value = value.toString();
+		md.readonly = readonly;
 
 		const d = await got.post(
 			`${this.baseURL}/organizations/${this.identity}/devices/${deviceId}/metadata`, {
